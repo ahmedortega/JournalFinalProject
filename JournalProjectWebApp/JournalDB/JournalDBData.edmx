@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="JournalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Articles">
+          <Key>
+            <PropertyRef Name="Serial" />
+          </Key>
+          <Property Name="Serial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="Subject" Type="varchar" MaxLength="50" />
+          <Property Name="AuthorID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" />
+          <Property Name="BirthYear" Type="int" />
+          <Property Name="WorkYears" Type="int" />
+        </EntityType>
+        <EntityType Name="BUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" />
+          <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Articles_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JournalModelStoreContainer">
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BUsers" EntityType="Self.BUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VUsers" EntityType="Self.VUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Articles_Authors" Association="Self.FK_Articles_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JournalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Serial" />
+          </Key>
+          <Property Name="Serial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AuthorID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Self.FK_Articles_Authors" FromRole="Articles" ToRole="Authors" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BirthYear" Type="Int32" />
+          <Property Name="WorkYears" Type="Int32" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Articles_Authors" FromRole="Authors" ToRole="Articles" />
+        </EntityType>
+        <EntityType Name="BUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Articles_Authors">
+          <End Role="Authors" Type="Self.Author" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JournalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Articles" EntityType="Self.Article" />
+          <EntitySet Name="Authors" EntityType="Self.Author" />
+          <EntitySet Name="BUsers" EntityType="Self.BUser" />
+          <EntitySet Name="VUsers" EntityType="Self.VUser" />
+          <AssociationSet Name="FK_Articles_Authors" Association="Self.FK_Articles_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JournalModelStoreContainer" CdmEntityContainer="JournalEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="JournalModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="JournalModel.Article">
+              <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="Serial" ColumnName="Serial" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="AuthorID" ColumnName="AuthorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="JournalModel.Author">
+              <MappingFragment StoreEntitySet="Authors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="BirthYear" ColumnName="BirthYear" />
+                <ScalarProperty Name="WorkYears" ColumnName="WorkYears" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BUsers">
+            <EntityTypeMapping TypeName="JournalModel.BUser">
+              <MappingFragment StoreEntitySet="BUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VUsers">
+            <EntityTypeMapping TypeName="JournalModel.VUser">
+              <MappingFragment StoreEntitySet="VUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

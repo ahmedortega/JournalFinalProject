@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JournalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admins">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fname" Type="varchar" MaxLength="50" />
+    <Property Name="Lname" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="11" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Articles">
+    <Key>
+      <PropertyRef Name="Serial" />
+    </Key>
+    <Property Name="Serial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="varchar" MaxLength="50" />
+    <Property Name="Subject" Type="varchar" MaxLength="50" />
+    <Property Name="AuthorID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Authors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fname" Type="varchar" MaxLength="50" />
+    <Property Name="Lname" Type="varchar" MaxLength="50" />
+    <Property Name="BirthYear" Type="int" />
+    <Property Name="WorkYears" Type="int" />
+  </EntityType>
+  <EntityType Name="BUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fname" Type="varchar" MaxLength="50" />
+    <Property Name="Lname" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="11" />
+    <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fname" Type="varchar" MaxLength="50" />
+    <Property Name="Lname" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Articles_Authors">
+    <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+    <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Authors">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Articles">
+        <PropertyRef Name="AuthorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="JournalModelStoreContainer">
+    <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BUsers" EntityType="Self.BUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VUsers" EntityType="Self.VUsers" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Articles_Authors" Association="Self.FK_Articles_Authors">
+      <End Role="Authors" EntitySet="Authors" />
+      <End Role="Articles" EntitySet="Articles" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
