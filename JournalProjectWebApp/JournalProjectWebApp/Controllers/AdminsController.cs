@@ -179,7 +179,43 @@ namespace JournalProjectWebApp.Controllers
             return result.ToList();
 
         }
-        public IEnumerable<Employee> GetUsersByType(int userType)
+        public IEnumerable<Employee> GetByUserType(int usertype)
+        {
+            JournalEntities _entities = new JournalEntities();
+            IEnumerable<Employee> result;
+            switch (usertype)
+            {
+                case 1:
+                    result = _entities.VUsers.Select(x => new Employee
+                    {
+                        Id = x.Id,
+                        Fname = x.Fname,
+                        Lname = x.Lname,
+                        Username = x.Username,
+                        Password = x.Password,
+                        Email = x.Email,
+                        UserType = x.UserType
+                    });
+                    break;
+                case 2:
+                    result = _entities.BUsers.Select(x => new Employee
+                    {
+                        Id = x.Id,
+                        Fname = x.Fname,
+                        Lname = x.Lname,
+                        Username = x.Username,
+                        Password = x.Password,
+                        Email = x.Email,
+                        UserType = x.UserType
+                    });
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+            return result.ToList();
+        }
+    }
+}
+        /*public IEnumerable<Employee> GetUsersByType(int userType)
         {
             JournalEntities _entities = new JournalEntities();
             var result = _entities.BUsers.Select(x => new Employee
@@ -205,8 +241,11 @@ namespace JournalProjectWebApp.Controllers
             if (userType == 1)
             {
                 //result.Select(x => x.UserType == 1).ToList();
-                result.Where(x => x.UserType == 1).ToList();
-                return result;
+                foreach (Employee val in result)
+                {
+                   yield return result.FirstOrDefault(x => x.UserType == 1);
+                }
+                
                 Console.WriteLine(result);
                 //foreach (Employee num in result)
                 //{
@@ -216,46 +255,46 @@ namespace JournalProjectWebApp.Controllers
             }
             if (userType == 2)
             {
-                result.Where(x => x.UserType == 1).ToList();
-                return result;
+                foreach (Employee val in result)
+                {
+                    yield return result.FirstOrDefault(x => x.UserType == 2);
+                }
+                //result.Where(x => x.UserType == 1).ToList();
+                //return result;
                 //yield return result.FirstOrDefault(x => x.UserType == 2);
             }
             
+        }*/
+
+        /*if (usertype == 1)
+        {
+            result = _entities.VUsers.Select(x => new Employee
+            {
+                Id = x.Id,
+                Fname = x.Fname,
+                Lname = x.Lname,
+                Username = x.Username,
+                Password = x.Password,
+                Email = x.Email,
+                UserType = x.UserType
+            });
         }
-    }
-}
-/*public IEnumerable<Employee> GetByUserType(int usertype)
-{
-    JournalEntities _entities = new JournalEntities();
-    if (usertype == 1)
-    {
-        var result = _entities.VUsers.Select(x => new Employee
+        else
         {
-            Id = x.Id,
-            Fname = x.Fname,
-            Lname = x.Lname,
-            Username = x.Username,
-            Password = x.Password,
-            Email = x.Email,
-            UserType = x.UserType
-        });
+            result = _entities.BUsers.Select(x => new Employee
+            {
+                Id = x.Id,
+                Fname = x.Fname,
+                Lname = x.Lname,
+                Username = x.Username,
+                Password = x.Password,
+                Email = x.Email,
+                UserType = x.UserType
+            });
+        }
         return result.ToList();
-    }
-    else if (usertype == 2)
-    {
-        var result = _entities.BUsers.Select(x => new Employee
-        {
-            Id = x.Id,
-            Fname = x.Fname,
-            Lname = x.Lname,
-            Username = x.Username,
-            Password = x.Password,
-            Email = x.Email,
-            UserType = x.UserType
-        });
-        return result.ToList();
-    }
-}
+    }*/
+
 // Retrieve all users
 /*public Object CopyAllUsers()
 {
