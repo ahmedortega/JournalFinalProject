@@ -18,7 +18,15 @@ namespace JournalProjectWebApp
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+                );
+            config.Routes.MapHttpRoute(
+                name: "DefaultRpc",
+                routeTemplate: "rpc/{controller}/{action}/{usertype}/{id}",
+                defaults: new { id = RouteParameter.Optional,
+                action = RouteParameter.Optional,
+                usertype = RouteParameter.Optional}
+                );
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
         }
     }
 }

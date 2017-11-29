@@ -8,6 +8,7 @@ using System.Web.Http;
 
 namespace JournalProjectWebApp.Controllers
 {
+    
     public class BUsersController : ApiController
     {
         public IEnumerable<BUser> GetBUsers()
@@ -17,6 +18,8 @@ namespace JournalProjectWebApp.Controllers
                 return _entities.BUsers.ToList();
             }
         }
+        
+
         public BUser GetBUserById(int id)
         {
             using (JournalEntities _entities = new JournalEntities())
