@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Collections.Generic;
 public struct User
 {
     public int Id { get; set; }
@@ -17,10 +18,12 @@ public struct User
     public string Password { get; set; }
     public int UserType { get; set; }
 }
+
 namespace JournalProjectWebApp.Controllers
 {
     public class AdminsController : ApiController
     {
+
         public IEnumerable<Admin> GetAdmins()
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -36,21 +39,7 @@ namespace JournalProjectWebApp.Controllers
                 return busers;
             }
         }
-        /*public void PostBUser(int id, BUser buser)
-        {
-            using (JournalEntities _entities = new JournalEntities())
-            {
-                if (id == 2)
-                {
-                    buser.UserType = 2;
-                    _entities.BUsers.Add(buser);
-                    _entities.SaveChanges();
-                    var msg = Request.CreateResponse(HttpStatusCode.Created, buser);
-                    msg.Headers.Location = new Uri(Request.RequestUri + "/" + buser.Id);
-                }
-            }
-        }*/
-        //last post
+        //         Add Business user &&  Add Admin user
         public void PostLast(int id, User emp)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -68,7 +57,7 @@ namespace JournalProjectWebApp.Controllers
                     buser.UserType = 2;
                     _entities.BUsers.Add(buser);
                 }
-                else if(id == 3)
+                else if (id == 3)
                 {
                     Admin admin = new Admin();
                     admin.Id = emp.Id;
@@ -84,7 +73,7 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
-
+        // update User 
         public void Put(int usertype, int id, User emp)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -125,6 +114,7 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
+        // Delete User 
         public void Delete(int usertype, int id)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -148,63 +138,240 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
-        /*public void Post(int usertype, Admin admin, BUser buser)
+        public IEnumerable<BUser> GetBUsers()
         {
             using (JournalEntities _entities = new JournalEntities())
             {
-                if (usertype == 3)
-                {
-                    admin.UserType = 3;
-                    _entities.Admins.Add(admin);
-                    _entities.SaveChanges();
-                }
+                return _entities.BUsers.ToList();
+            }
+        }
+        public IEnumerable<VUser> GetVUsers()
+        {
+            using (JournalEntities _entities = new JournalEntities())
+            {
+                return _entities.VUsers.ToList();
+            }
+        }
+        // Get All Users
+        public IEnumerable<Employee> GetAllUsers()
+        {
+            JournalEntities _entities = new JournalEntities();
+            var result = _entities.BUsers.Select(x => new Employee
+            {
+                Id = x.Id,
+                Fname = x.Fname,
+                Lname = x.Lname,
+                Username = x.Username,
+                Password = x.Password,
+                Email = x.Email,
+                UserType = x.UserType
+            })
+                  .Concat(_entities.VUsers.Select(x => new Employee
+                  {
+                      Id = x.Id,
+                      Fname = x.Fname,
+                      Lname = x.Lname,
+                      Username = x.Username,
+                      Password = x.Password,
+                      Email = x.Email,
+                      UserType = x.UserType
+                  }));
+            return result.ToList();
 
-                else if (usertype == 2)
-                {
-                    buser.UserType = 2;
-                    _entities.BUsers.Add(buser);
-                    _entities.SaveChanges();
-                }
-            }
-        }*/
-        /*public HttpResponseMessage PostBUser(int userType, BUser buser)
-        {
-            using (JournalEntities _entities = new JournalEntities())
-            {
-              if (userType == 2)
-                {
-                    buser.UserType = 2;
-                    _entities.BUsers.Add(buser);
-                    _entities.SaveChanges();
-                    var msg = Request.CreateResponse(HttpStatusCode.Created, buser);
-                    msg.Headers.Location = new Uri(Request.RequestUri + "/" + buser.Id);
-                    return msg;
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Business User doesn't inserted");
-                }
-            }
         }
-        public HttpResponseMessage PostAdmin(int userType, Admin admin)
+        public IEnumerable<Employee> GetUsersByType(int userType)
         {
-            using (JournalEntities _entities = new JournalEntities())
+            JournalEntities _entities = new JournalEntities();
+            var result = _entities.BUsers.Select(x => new Employee
             {
-                if (userType == 3)
-                {
-                    admin.UserType = 3;
-                    _entities.Admins.Add(admin);
-                    _entities.SaveChanges();
-                    var msg = Request.CreateResponse(HttpStatusCode.Created, admin);
-                    msg.Headers.Location = new Uri(Request.RequestUri + "/" + admin.Id);
-                    return msg;
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Admin doesn't inserted");
-                }
+                Id = x.Id,
+                Fname = x.Fname,
+                Lname = x.Lname,
+                Username = x.Username,
+                Password = x.Password,
+                Email = x.Email,
+                UserType = x.UserType
+            })
+                  .Concat(_entities.VUsers.Select(x => new Employee
+                  {
+                      Id = x.Id,
+                      Fname = x.Fname,
+                      Lname = x.Lname,
+                      Username = x.Username,
+                      Password = x.Password,
+                      Email = x.Email,
+                      UserType = x.UserType
+                  }));
+            if (userType == 1)
+            {
+                //result.Select(x => x.UserType == 1).ToList();
+                result.Where(x => x.UserType == 1).ToList();
+                return result;
+                Console.WriteLine(result);
+                //foreach (Employee num in result)
+                //{
+                //    return result.Where(x => x.UserType == 1);
+                //}
+
             }
+            if (userType == 2)
+            {
+                result.Where(x => x.UserType == 1).ToList();
+                return result;
+                //yield return result.FirstOrDefault(x => x.UserType == 2);
+            }
+            
         }
-        */
     }
 }
+/*public IEnumerable<Employee> GetByUserType(int usertype)
+{
+    JournalEntities _entities = new JournalEntities();
+    if (usertype == 1)
+    {
+        var result = _entities.VUsers.Select(x => new Employee
+        {
+            Id = x.Id,
+            Fname = x.Fname,
+            Lname = x.Lname,
+            Username = x.Username,
+            Password = x.Password,
+            Email = x.Email,
+            UserType = x.UserType
+        });
+        return result.ToList();
+    }
+    else if (usertype == 2)
+    {
+        var result = _entities.BUsers.Select(x => new Employee
+        {
+            Id = x.Id,
+            Fname = x.Fname,
+            Lname = x.Lname,
+            Username = x.Username,
+            Password = x.Password,
+            Email = x.Email,
+            UserType = x.UserType
+        });
+        return result.ToList();
+    }
+}
+// Retrieve all users
+/*public Object CopyAllUsers()
+{
+    Employee emp = new Employee();
+    JournalEntities _entities = new JournalEntities();
+    foreach(BUser buser in _entities.BUsers)
+    {
+        emp.Fname = buser.Fname;
+        emp.Lname = buser.Lname;
+        emp.Phone = buser.Phone;
+        emp.Email = buser.Email;
+        emp.Username = buser.Username;
+        emp.Password = buser.Password;
+        emp.UserType = 2;
+    }
+    foreach (VUser vuser in _entities.VUsers)
+    {
+        emp.Fname = vuser.Fname;
+        emp.Lname = vuser.Lname;
+        emp.Email = vuser.Email;
+        emp.Username = vuser.Username;
+        emp.Password = vuser.Password;
+        emp.UserType = 1;
+    }
+    Console.WriteLine(emp);
+    return emp;
+}
+ * public Tuple< IEnumerable<BUser>,IEnumerable<VUser> > GetAllUsers()
+{
+    using (JournalEntities _entities = new JournalEntities())
+    {
+       // return Tuple.Create(_entities.BUsers.ToList(), _entities.VUsers.ToList());
+        IEnumerable<BUser> busers = _entities.BUsers.ToList();
+        IEnumerable<VUser> vusers = _entities.VUsers.ToList();
+        return (busers, vusers);
+        //return (_entities.BUsers.ToList(), _entities.VUsers.ToList());
+        //IEnumerable<BUser> first = this.GetBUsers();
+        //Assign to empty list so we can use later
+        //IEnumerable<VUser> second = this.GetVUsers();
+        */
+//IEnumerable<object> concatedList = first.Concat(second);
+//return concatedList;
+//var busers = _entities.BUsers;
+//var vusers = _entities.VUsers;
+//var result = busers.Concat(vusers);
+//return busers.AddRange(vusers);
+//var result = busers.Concat(vusers);
+//return busers;
+
+/* public static Tuple<BUser, VUser> GetAllUsers()
+ {
+     using (JournalEntities _entities = new JournalEntities())
+     { 
+             var busers = _entities.BUsers.ToList();
+             var vusers = _entities.VUsers.ToList();
+             var result = Tuple.Create(busers, vusers);
+             return result;
+     }
+ }*/
+
+
+/*public void Post(int usertype, Admin admin, BUser buser)
+{
+    using (JournalEntities _entities = new JournalEntities())
+    {
+        if (usertype == 3)
+        {
+            admin.UserType = 3;
+            _entities.Admins.Add(admin);
+            _entities.SaveChanges();
+        }
+
+        else if (usertype == 2)
+        {
+            buser.UserType = 2;
+            _entities.BUsers.Add(buser);
+            _entities.SaveChanges();
+        }
+    }
+}*/
+/*public HttpResponseMessage PostBUser(int userType, BUser buser)
+{
+    using (JournalEntities _entities = new JournalEntities())
+    {
+      if (userType == 2)
+        {
+            buser.UserType = 2;
+            _entities.BUsers.Add(buser);
+            _entities.SaveChanges();
+            var msg = Request.CreateResponse(HttpStatusCode.Created, buser);
+            msg.Headers.Location = new Uri(Request.RequestUri + "/" + buser.Id);
+            return msg;
+        }
+        else
+        {
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Business User doesn't inserted");
+        }
+    }
+}
+public HttpResponseMessage PostAdmin(int userType, Admin admin)
+{
+    using (JournalEntities _entities = new JournalEntities())
+    {
+        if (userType == 3)
+        {
+            admin.UserType = 3;
+            _entities.Admins.Add(admin);
+            _entities.SaveChanges();
+            var msg = Request.CreateResponse(HttpStatusCode.Created, admin);
+            msg.Headers.Location = new Uri(Request.RequestUri + "/" + admin.Id);
+            return msg;
+        }
+        else
+        {
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Admin doesn't inserted");
+        }
+    }
+}
+*/
