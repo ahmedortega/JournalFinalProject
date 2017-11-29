@@ -1,4 +1,5 @@
 ﻿using JournalDB;
+using JournalProjectWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,59 @@ using System.Web.Http;
 
 namespace JournalProjectWebApp.Controllers
 {
+    [RoutePrefix("api/vusers")]
     public class VUsersController : ApiController
     {
+        [Route("articles/get")]
+        public List<PocoArticles> GetArticles()
+        {
+            JournalEntities _entities = new JournalEntities();
+            return _entities.Articles.Select(c => new PocoArticles
+            {
+                serial = c.Serial,
+                title = c.Title,
+                authorId = c.AuthorID,
+                subject = c.Subject,
+                authorFname = c.Author.Fname,
+                authorLname = c.Author.Lname,
+                authorBirthYear = c.Author.BirthYear,
+                authorWorkYears = c.Author.WorkYears
+            }).ToList();
+        }
+        [Route("articles/{name:alpha}")]
+        public PocoArticles GetaticleByname(string name)
+        {
+            JournalEntities _entities = new JournalEntities();
+            List<PocoArticles> result;
+            result = _entities.Articles.Select(c => new PocoArticles
+            {
+                serial = c.Serial,
+                title = c.Title,
+                authorId = c.AuthorID,
+                subject = c.Subject,
+                authorFname = c.Author.Fname,
+                authorLname = c.Author.Lname,
+                authorBirthYear = c.Author.BirthYear,
+                authorWorkYears = c.Author.WorkYears
+            }).ToList();
+            return result.FirstOrDefault(c => c.title.ToLower() == name.ToLower());
+        }
+    }
+}
+        /*[Route("articles/{name:alpha}")]
+        public Article GetArticleByName(string name)
+        {
+            JournalEntities _entities = new JournalEntities();
+            return _entities.Articles.FirstOrDefault(c => c.Title.ToLower() == name);
+        }
         public IEnumerable<VUser> GetVUsers()
         {
             using (JournalEntities _entities = new JournalEntities())
             {
                 return _entities.VUsers.ToList();
             }
-        }
-        public VUser GetVUserById(int id)
+        }*/
+        /*public VUser GetVUserById(int id)
         {
             using (JournalEntities _entities = new JournalEntities())
             {
@@ -92,7 +136,4 @@ namespace JournalProjectWebApp.Controllers
                 }
             }
         }
-
-
-    }
-}
+        */

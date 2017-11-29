@@ -138,20 +138,6 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
-        public IEnumerable<BUser> GetBUsers()
-        {
-            using (JournalEntities _entities = new JournalEntities())
-            {
-                return _entities.BUsers.ToList();
-            }
-        }
-        public IEnumerable<VUser> GetVUsers()
-        {
-            using (JournalEntities _entities = new JournalEntities())
-            {
-                return _entities.VUsers.ToList();
-            }
-        }
         // Get All Users
         public IEnumerable<Employee> GetAllUsers()
         {
