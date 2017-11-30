@@ -13,24 +13,37 @@ namespace JournalProjectWebApp.Controllers
     public class LoginController : ApiController
     {
         [Route("searchV")]
-        public bool SearchVusers(Employee emp)
+        public HttpResponseMessage SearchVusers(Employee emp)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             JournalEntities _entities = new JournalEntities();
             if(emp.UserType == 1)
             {
-                var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower());
-                if(result != null)
+                try
                 {
-                    return true;
+                    var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower());
+                    if (result != null)
+                    {
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        return response;
+                    }
+                    else
+                    {
+
+                        response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
+                        return response;
+                    }
+                    return response;
                 }
-                else
-                {
-                    return false;
+                catch(Exception ex)
+                {   
+                    response = Request.CreateErrorResponse(HttpStatusCode.BadRequest,ex);
+                    return response;
                 }
             }
             else
             {
-                return false;
+                return response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
             }
         }
         [Route("searchB")]

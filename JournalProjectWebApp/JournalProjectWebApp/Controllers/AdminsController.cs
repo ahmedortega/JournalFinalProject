@@ -3,10 +3,7 @@ using JournalProjectWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Collections.Generic;
 public struct User
 {
     public int Id { get; set; }
@@ -21,9 +18,10 @@ public struct User
 
 namespace JournalProjectWebApp.Controllers
 {
+    [RoutePrefix("Admins")]
     public class AdminsController : ApiController
     {
-
+        [Route("get")]
         public IEnumerable<Admin> GetAdmins()
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -31,6 +29,7 @@ namespace JournalProjectWebApp.Controllers
                 return _entities.Admins.ToList();
             }
         }
+        [Route("Buser/{id:int:min(1)}")]
         public BUser GetBUserById(int id)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -40,11 +39,12 @@ namespace JournalProjectWebApp.Controllers
             }
         }
         //         Add Business user &&  Add Admin user
-        public void PostLast(int id, User emp)
+        [Route("post/{usertype}")]
+        public void PostLast(int usertype, User emp)
         {
             using (JournalEntities _entities = new JournalEntities())
             {
-                if (id == 2)
+                if (usertype == 2)
                 {
                     BUser buser = new BUser();
                     buser.Id = emp.Id;
@@ -57,7 +57,7 @@ namespace JournalProjectWebApp.Controllers
                     buser.UserType = 2;
                     _entities.BUsers.Add(buser);
                 }
-                else if (id == 3)
+                else if (usertype == 3)
                 {
                     Admin admin = new Admin();
                     admin.Id = emp.Id;
@@ -73,7 +73,8 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
-        // update User 
+        // update User
+        [Route("userput/{usertype:int}/{id:int}")]
         public void Put(int usertype, int id, User emp)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -86,7 +87,7 @@ namespace JournalProjectWebApp.Controllers
                     vuser.Email = emp.Email;
                     vuser.Username = emp.Username;
                     vuser.Password = emp.Password;
-                    vuser.UserType = 2;
+                    vuser.UserType = 1;
                 }
                 if (usertype == 2)
                 {
@@ -114,7 +115,8 @@ namespace JournalProjectWebApp.Controllers
                 _entities.SaveChanges();
             }
         }
-        // Delete User 
+        // Delete User
+        [Route("userdelete/{usertype:int}/{id:int:min(1)}")]
         public void Delete(int usertype, int id)
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -139,6 +141,7 @@ namespace JournalProjectWebApp.Controllers
             }
         }
         // Get All Users
+        [Route("users/get")]
         public IEnumerable<Employee> GetAllUsers()
         {
             JournalEntities _entities = new JournalEntities();
@@ -165,6 +168,8 @@ namespace JournalProjectWebApp.Controllers
             return result.ToList();
 
         }
+        //Retrieve Users Depending on user Type
+        [Route("users/{usertype:int}")]
         public IEnumerable<Employee> GetByUserType(int usertype)
         {
             JournalEntities _entities = new JournalEntities();
