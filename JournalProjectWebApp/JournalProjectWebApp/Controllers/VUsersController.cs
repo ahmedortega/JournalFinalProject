@@ -46,6 +46,25 @@ namespace JournalProjectWebApp.Controllers
             }).ToList();
             return result.FirstOrDefault(c => c.title.ToLower() == name.ToLower());
         }
+        [Route("articles/author/{name:alpha}")]
+        public List <PocoArticles> GetaticleAuthorname(string name)
+        {
+            JournalEntities _entities = new JournalEntities();
+            List<PocoArticles> result;
+            var rr = _entities.Articles.Where(c => c.Author.Fname.ToLower() == name);
+            result = _entities.Articles.Select(c => new PocoArticles
+            {
+                serial = c.Serial,
+                title = c.Title,
+                authorId = c.AuthorID,
+                subject = c.Subject,
+                authorFname = c.Author.Fname,
+                authorLname = c.Author.Lname,
+                authorBirthYear = c.Author.BirthYear,
+                authorWorkYears = c.Author.WorkYears
+            }).ToList();
+            return result.Where(c => c.authorFname.ToLower() == name.ToLower()).ToList();
+        }
     }
 }
         /*[Route("articles/{name:alpha}")]
