@@ -21,7 +21,7 @@ namespace JournalProjectWebApp.Controllers
             {
                 try
                 {
-                    var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower());
+                    var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower() && c.Password == emp.Password );
                     if (result != null)
                     {
                         response = Request.CreateResponse(HttpStatusCode.OK);
