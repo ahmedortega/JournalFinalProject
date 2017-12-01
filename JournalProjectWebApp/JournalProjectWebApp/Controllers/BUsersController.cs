@@ -31,19 +31,28 @@ namespace JournalProjectWebApp.Controllers
         [Route("articles/post")]
         public HttpResponseMessage Post(Article article)
         {
+            HttpResponseMessage respone = new HttpResponseMessage();
             using (JournalEntities _entities = new JournalEntities())
             {
                 try
                 {
-                    _entities.Articles.Add(article);
-                    _entities.SaveChanges();
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, article);
-                    response.Headers.Location = new Uri(Request.RequestUri + "/" + article.Serial);
-                    return response;
+                    if (article != null)
+                    {
+                        _entities.Articles.Add(article);
+                        _entities.SaveChanges();
+                        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, article);
+                        response = Request.CreateResponse(HttpStatusCode.OK, article);
+                        return response;
+                    }
+                    else
+                    {
+                        return respone = Request.CreateErrorResponse(HttpStatusCode.NoContent, "The article value is null");
+                    }
+                    return respone;
                 }
                 catch (Exception ex)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return respone = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
                 }
             }
         }
