@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace JournalProjectWebApp.Controllers
 {
-    [RoutePrefix("api/busers")]
+    [RoutePrefix("busers")]
     public class BUsersController : ApiController
     {
         [Route("articles/get")]
@@ -47,59 +47,118 @@ namespace JournalProjectWebApp.Controllers
                 }
             }
         }
-        [Route("articles/getbyid/{id}")]
-        public Article GetBySerial(int id)
+        [Route("articles/getbyid/{id:int}")]
+        public HttpResponseMessage GetBySerial(int id)
         {
+            HttpResponseMessage msg;
             using (JournalEntities _entities = new JournalEntities())
             {
-                return _entities.Articles.FirstOrDefault(c => c.Serial == id);
+                try
+                {
+                    var article = _entities.Articles.Select(c => new PocoArticles
+                    {
+                        serial = c.Serial,
+                        title = c.Title,
+                        authorId = c.AuthorID,
+                        subject = c.Subject,
+                        authorFname = c.Author.Fname,
+                        authorLname = c.Author.Lname,
+                        authorBirthYear = c.Author.BirthYear,
+                        authorWorkYears = c.Author.WorkYears
+                    }).ToList().FirstOrDefault(c => c.serial == id);
+                    if (article != null)
+                    {
+                        msg = Request.CreateResponse(HttpStatusCode.Accepted, article);
+                        return msg;
+                    }
+                    else
+                    {
+                        msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not Found");
+                        return msg;
+                    }
+                    return msg;
+                }
+                catch(Exception ex)
+                {
+                    msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                    return msg;
+                }
             }
         }
-        [Route("articles/delete/{id}")]
+        [Route("articles/delete/{id:int}")]
         public HttpResponseMessage DeleteArticle(int id)
         {
+            HttpResponseMessage result;
             using (JournalEntities _entities = new JournalEntities())
             {
                 try
                 {
                     var article = _entities.Articles.FirstOrDefault(c => c.Serial == id);
-                    _entities.Articles.Remove(article);
-                    _entities.SaveChanges();
-                    var msg = Request.CreateResponse(HttpStatusCode.Created, article);
-                    msg.Headers.Location = new Uri(Request.RequestUri + "/" + article.Serial + "is Deleted");
-                    return msg;
+                    if (article != null)
+                    {
+                        _entities.Articles.Remove(article);
+                        _entities.SaveChanges();
+                        var msg = Request.CreateResponse(HttpStatusCode.Created, article);
+                        msg.Headers.Location = new Uri(Request.RequestUri + "/" + article.Serial + "is Deleted");
+                        return msg;
+                    }
+                    else
+                    {
+                        result = Request.CreateErrorResponse(HttpStatusCode.NotFound, "The Atticle With this Serial :" + id + "Not Found");
+                        return result;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 }
             }
         }
         [Route("articles/put/{id}")]
-        public HttpResponseMessage PutArticle(int id, Article article)
+        public HttpResponseMessage PutArticle(int id, PocoArticles article)
         {
+            HttpResponseMessage response;
             using (JournalEntities _entities = new JournalEntities())
             {
                 try
                 {
                     var myArticle = _entities.Articles.FirstOrDefault(c => c.Serial == id);
+                    /*var result = _entities.Articles.Select(c => new PocoArticles
+                    {
+                        authorId = c.AuthorID
+                    }).ToList().FirstOrDefault(x => x.authorId == article.authorId);*/
+
                     if (myArticle == null)
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, " no Visitor User with this ID");
+                        response = Request.CreateErrorResponse(HttpStatusCode.NotFound, "the Author Id is not exist");
+                        return response;
                     }
                     else
                     {
-                        myArticle.Title = article.Title;
-                        myArticle.Subject = article.Subject;
-                        myArticle.Author = article.Author;
-                        myArticle.AuthorID = article.AuthorID;
+                        myArticle.Title = article.title;
+                        myArticle.Subject = article.subject;
+                        var check = _entities.Authors.FirstOrDefault(c => c.Id == article.authorId);
+                        if (check != null)
+                        {
+                            myArticle.AuthorID = article.authorId;
+                            myArticle.Author.Fname = article.authorFname;
+                            myArticle.Author.Lname = article.authorLname;
+                            myArticle.Author.BirthYear = article.authorBirthYear;
+                            myArticle.Author.WorkYears = article.authorWorkYears;
+                        }
+                        else
+                        {
+                            response = Request.CreateErrorResponse(HttpStatusCode.Forbidden, "The Author id is not exist");
+                        }
                         _entities.SaveChanges();
-                        return Request.CreateResponse(HttpStatusCode.OK, " The Visitor User is Updated ");
+                        response = Request.CreateResponse(HttpStatusCode.OK, " The Visitor User is Updated ");
+                        return response;
                     }
+                    return response;
                 }
                 catch (Exception ex)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest,ex);
                 }
             }
         }

@@ -29,7 +29,82 @@ namespace JournalProjectWebApp.Controllers
             }).ToList();
         }
         [Route("articles/{name:alpha}")]
-        public PocoArticles GetaticleByname(string name)
+        public HttpResponseMessage GetaticleByname(string name)
+        {
+            HttpResponseMessage msg;
+            try
+            {
+                JournalEntities _entities = new JournalEntities();
+                List<PocoArticles> result;
+                result = _entities.Articles.Select(c => new PocoArticles
+                {
+                    serial = c.Serial,
+                    title = c.Title,
+                    authorId = c.AuthorID,
+                    subject = c.Subject,
+                    authorFname = c.Author.Fname,
+                    authorLname = c.Author.Lname,
+                    authorBirthYear = c.Author.BirthYear,
+                    authorWorkYears = c.Author.WorkYears
+                }).ToList();
+                PocoArticles Fresult = new PocoArticles();
+                Fresult = result.FirstOrDefault(c => c.title.ToLower() == name.ToLower());
+                if (Fresult != null)
+                {
+                    msg = Request.CreateResponse(HttpStatusCode.Accepted, Fresult);
+                    return msg;
+                }
+                else
+                {
+                    msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "The Author name");
+                    return msg;
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                return msg;
+            }
+        }
+        [Route("articles/author/{name:alpha}")]
+        public HttpResponseMessage GetaticleAuthorname(string name)
+        {
+            HttpResponseMessage msg;
+            try
+            {
+                JournalEntities _entities = new JournalEntities();
+                List<PocoArticles> result;
+                var rr = _entities.Articles.Where(c => c.Author.Fname.ToLower() == name);
+                result = _entities.Articles.Select(c => new PocoArticles
+                {
+                    serial = c.Serial,
+                    title = c.Title,
+                    authorId = c.AuthorID,
+                    subject = c.Subject,
+                    authorFname = c.Author.Fname,
+                    authorLname = c.Author.Lname,
+                    authorBirthYear = c.Author.BirthYear,
+                    authorWorkYears = c.Author.WorkYears
+                }).ToList();
+                result = result.Where(c => c.authorFname.ToLower() == name.ToLower()).ToList();
+                if (result != null)
+                {
+                    msg = Request.CreateResponse(HttpStatusCode.Accepted, result);
+                    return msg;
+                }
+                else
+                {
+                    msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "The Author name");
+                    return msg;
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                return msg;
+            }
+        }
+        /*public PocoArticles GetaticleByname(string name)
         {
             JournalEntities _entities = new JournalEntities();
             List<PocoArticles> result;
@@ -45,9 +120,11 @@ namespace JournalProjectWebApp.Controllers
                 authorWorkYears = c.Author.WorkYears
             }).ToList();
             return result.FirstOrDefault(c => c.title.ToLower() == name.ToLower());
-        }
-        [Route("articles/author/{name:alpha}")]
-        public List <PocoArticles> GetaticleAuthorname(string name)
+        }*/
+
+    }
+}
+        /*public List <PocoArticles> GetaticleAuthorname(string name)
         {
             JournalEntities _entities = new JournalEntities();
             List<PocoArticles> result;
@@ -64,9 +141,8 @@ namespace JournalProjectWebApp.Controllers
                 authorWorkYears = c.Author.WorkYears
             }).ToList();
             return result.Where(c => c.authorFname.ToLower() == name.ToLower()).ToList();
-        }
-    }
-}
+        }*/
+
         /*[Route("articles/{name:alpha}")]
         public Article GetArticleByName(string name)
         {
