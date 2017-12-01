@@ -17,75 +17,77 @@ namespace JournalProjectWebApp.Controllers
         {
             HttpResponseMessage response = new HttpResponseMessage();
             JournalEntities _entities = new JournalEntities();
-            if(emp.UserType == 1)
+            try
             {
-                try
+                var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower() && c.Password == emp.Password);
+                if (result != null)
                 {
-                    var result = _entities.VUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower() && c.Password == emp.Password );
-                    if (result != null)
-                    {
-                        response = Request.CreateResponse(HttpStatusCode.OK);
-                        return response;
-                    }
-                    else
-                    {
-
-                        response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
-                        return response;
-                    }
+                    response = Request.CreateResponse(HttpStatusCode.OK);
                     return response;
                 }
-                catch(Exception ex)
-                {   
-                    response = Request.CreateErrorResponse(HttpStatusCode.BadRequest,ex);
+                else
+                {
+
+                    response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
                     return response;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
+                response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return response;
             }
         }
         [Route("searchB")]
-        public bool SearchBusers(Employee emp)
+        public HttpResponseMessage SearchBusers(Employee emp)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             JournalEntities _entities = new JournalEntities();
-            if (emp.UserType == 1)
+            try
             {
-                var result = _entities.BUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower());
+                var result = _entities.BUsers.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower() && c.Password == emp.Password);
                 if (result != null)
                 {
-                    return true;
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    return response;
                 }
                 else
                 {
-                    return false;
+
+                    response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
+                    return response;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return response;
             }
         }
         [Route("searchA")]
-        public bool SearchAdmins(Employee emp)
+        public HttpResponseMessage SearchAdmins(Employee emp)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             JournalEntities _entities = new JournalEntities();
-            if (emp.UserType == 1)
+            try
             {
-                var result = _entities.Admins.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower());
+                var result = _entities.Admins.FirstOrDefault(c => c.Username.ToLower() == emp.Username.ToLower() && c.Password == emp.Password);
                 if (result != null)
                 {
-                    return true;
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    return response;
                 }
                 else
                 {
-                    return false;
+
+                    response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error");
+                    return response;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return response;
             }
         }
         [Route("search")]

@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace JournalProjectWebApp.Controllers
 {
-    [RoutePrefix("api/vusers")]
+    [RoutePrefix("vusers")]
     public class VUsersController : ApiController
     {
         [Route("articles/get")]
