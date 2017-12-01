@@ -138,7 +138,7 @@ namespace JournalProjectWebApp.Controllers
                         myArticle.Title = article.title;
                         myArticle.Subject = article.subject;
                         var check = _entities.Authors.FirstOrDefault(c => c.Id == article.authorId);
-                        if (check != null)
+                        if (check != null && (article.authorId).GetType() == typeof(int) && (article.authorBirthYear).GetType() == typeof(int) && (article.authorWorkYears).GetType() == typeof(int))
                         {
                             myArticle.AuthorID = article.authorId;
                             myArticle.Author.Fname = article.authorFname;
@@ -158,7 +158,8 @@ namespace JournalProjectWebApp.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest,ex);
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                    return response;
                 }
             }
         }

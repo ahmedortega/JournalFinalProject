@@ -8,3 +8,4 @@ C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalDB\obj\Debug\JournalDB.csproj.CoreCompileInputs.cache
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalDB\obj\Debug\JournalDB.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalDB\obj\Debug\JournalDB.pdb
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalDB\obj\Debug\JournalDB.csprojResolveAssemblyReference.cache
