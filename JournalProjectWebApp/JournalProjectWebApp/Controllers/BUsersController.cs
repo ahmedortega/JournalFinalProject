@@ -29,8 +29,10 @@ namespace JournalProjectWebApp.Controllers
             }).ToList();
         }
         [Route("articles/post")]
-        public HttpResponseMessage Post(Article article)
+        public HttpResponseMessage Post(PocoArticles article)
         {
+            Article myArticle = new Article();
+            Author myAuthor = new Author();
             HttpResponseMessage respone = new HttpResponseMessage();
             using (JournalEntities _entities = new JournalEntities())
             {
@@ -38,8 +40,27 @@ namespace JournalProjectWebApp.Controllers
                 {
                     if (article != null)
                     {
-                        _entities.Articles.Add(article);
-                        _entities.SaveChanges();
+                        myArticle.AuthorID = article.authorId;
+                        myArticle.Title = article.title;
+                        myArticle.Subject = article.subject;
+                        if(myArticle != null)
+                        {
+                            _entities.Articles.Add(myArticle);
+                            _entities.SaveChanges();
+                        }
+                        else
+                        {
+                            return respone = Request.CreateErrorResponse(HttpStatusCode.NoContent, "The Article Values in NULL");
+                        }
+                        myAuthor.Lname = article.authorLname;
+                        myAuthor.Fname = article.authorFname;
+                        myAuthor.BirthYear = article.authorBirthYear;
+                        myAuthor.WorkYears = article.authorWorkYears;
+                        if (myAuthor.Lname != null && myAuthor.Fname != null)
+                        {
+                            _entities.Authors.Add(myAuthor);
+                            _entities.SaveChanges();
+                        }
                         HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, article);
                         response = Request.CreateResponse(HttpStatusCode.OK, article);
                         return response;
@@ -48,7 +69,6 @@ namespace JournalProjectWebApp.Controllers
                     {
                         return respone = Request.CreateErrorResponse(HttpStatusCode.NoContent, "The article value is null");
                     }
-                    return respone;
                 }
                 catch (Exception ex)
                 {
@@ -85,7 +105,6 @@ namespace JournalProjectWebApp.Controllers
                         msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not Found");
                         return msg;
                     }
-                    return msg;
                 }
                 catch(Exception ex)
                 {
@@ -163,7 +182,6 @@ namespace JournalProjectWebApp.Controllers
                         response = Request.CreateResponse(HttpStatusCode.OK, " The Visitor User is Updated ");
                         return response;
                     }
-                    return response;
                 }
                 catch (Exception ex)
                 {
@@ -180,7 +198,7 @@ namespace JournalProjectWebApp.Controllers
             {
                 try
                 {
-                    var myBuser = _entities.BUsers.FirstOrDefault(c => c.Password.ToLower() == password.ToLower() );
+                    var myBuser = _entities.BUsers.FirstOrDefault(c => c.Password == password );
                     if (myBuser == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, " no Business User with this Password");
