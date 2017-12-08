@@ -3,7 +3,10 @@ using JournalProjectWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
+using System.Net;
+
 public struct User
 {
     public int Id { get; set; }
@@ -39,9 +42,10 @@ namespace JournalProjectWebApp.Controllers
             }
         }
         //         Add Business user &&  Add Admin user
-        [Route("post/{usertype}")]
-        public void PostLast(int usertype, User emp)
+        [Route("post/{usertype:int}")]
+        public HttpResponseMessage PostLast(int usertype, User emp)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             using (JournalEntities _entities = new JournalEntities())
             {
                 if (usertype == 2)
@@ -56,6 +60,9 @@ namespace JournalProjectWebApp.Controllers
                     buser.Password = emp.Password;
                     buser.UserType = 2;
                     _entities.BUsers.Add(buser);
+                    _entities.SaveChanges();
+                    response = Request.CreateResponse(HttpStatusCode.OK, "The BUser is added");
+                    return response;
                 }
                 else if (usertype == 3)
                 {
@@ -68,27 +75,25 @@ namespace JournalProjectWebApp.Controllers
                     admin.Password = emp.Password;
                     admin.UserType = 3;
                     _entities.Admins.Add(admin);
+                    _entities.SaveChanges();
+                    response = Request.CreateResponse(HttpStatusCode.OK, "The Admin is added");
+                    return response;
 
                 }
-                _entities.SaveChanges();
+                else
+                {
+                    response = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not Added");
+                    return response;
+                }
             }
         }
         // update User
         [Route("userput/{usertype:int}/{id:int}")]
-        public void Put(int usertype, int id, User emp)
+        public HttpResponseMessage Put(int usertype, int id, User emp)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             using (JournalEntities _entities = new JournalEntities())
             {
-                if (usertype == 1)
-                {
-                    var vuser = _entities.VUsers.FirstOrDefault(c => c.Id == id);
-                    vuser.Fname = emp.Fname;
-                    vuser.Lname = emp.Lname;
-                    vuser.Email = emp.Email;
-                    vuser.Username = emp.Username;
-                    vuser.Password = emp.Password;
-                    vuser.UserType = 1;
-                }
                 if (usertype == 2)
                 {
                     var buser = _entities.BUsers.FirstOrDefault(c => c.Id == id);
@@ -99,6 +104,9 @@ namespace JournalProjectWebApp.Controllers
                     buser.Username = emp.Username;
                     buser.Password = emp.Password;
                     buser.UserType = 2;
+                    _entities.SaveChanges();
+                    response = Request.CreateResponse(HttpStatusCode.OK, "The BUser is Updated");
+                    return response;
                 }
                 else if (usertype == 3)
                 {
@@ -109,10 +117,16 @@ namespace JournalProjectWebApp.Controllers
                     admin.Username = emp.Username;
                     admin.Password = emp.Password;
                     admin.UserType = 3;
-                    _entities.Admins.Add(admin);
+                    _entities.SaveChanges();
+                    response = Request.CreateResponse(HttpStatusCode.OK, "The Admin is Updated");
+                    return response;
 
                 }
-                _entities.SaveChanges();
+                else
+                {
+                    response = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not updated");
+                    return response;
+                }
             }
         }
         // Delete User
@@ -152,7 +166,6 @@ namespace JournalProjectWebApp.Controllers
                 Lname = x.Lname,
                 Username = x.Username,
                 Password = x.Password,
-                Email = x.Email,
                 UserType = x.UserType
             })
                   .Concat(_entities.VUsers.Select(x => new Employee
@@ -162,9 +175,16 @@ namespace JournalProjectWebApp.Controllers
                       Lname = x.Lname,
                       Username = x.Username,
                       Password = x.Password,
-                      Email = x.Email,
                       UserType = x.UserType
-                  }));
+                  }).Concat(_entities.Admins.Select(x => new Employee
+                  {
+                      Id = x.Id,
+                      Fname = x.Fname,
+                      Lname = x.Lname,
+                      Username = x.Username,
+                      Password = x.Password,
+                      UserType = x.UserType
+                  })));
             return result.ToList();
 
         }
@@ -197,6 +217,17 @@ namespace JournalProjectWebApp.Controllers
                         Username = x.Username,
                         Password = x.Password,
                         Email = x.Email,
+                        UserType = x.UserType
+                    });
+                    break;
+                case 3:
+                    result = _entities.Admins.Select(x => new Employee
+                    {
+                        Id = x.Id,
+                        Fname = x.Fname,
+                        Lname = x.Lname,
+                        Username = x.Username,
+                        Password = x.Password,
                         UserType = x.UserType
                     });
                     break;
