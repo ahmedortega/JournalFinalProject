@@ -22,5 +22,6 @@ namespace JournalDB
         public string Username { get; set; }
         public string Password { get; set; }
         public int UserType { get; set; }
+        public byte[] Image { get; set; }
     }
 }

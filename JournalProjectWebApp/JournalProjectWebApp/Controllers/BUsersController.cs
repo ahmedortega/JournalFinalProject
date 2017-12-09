@@ -145,7 +145,7 @@ namespace JournalProjectWebApp.Controllers
                 }
             }
         }
-        [Route("articles/put/{id}")]
+        [Route("articles/put/{id:int}")]
         public HttpResponseMessage PutArticle(int id, PocoArticles article)
         {
             HttpResponseMessage response;
@@ -166,16 +166,26 @@ namespace JournalProjectWebApp.Controllers
                     }
                     else
                     {
+                        var author = _entities.Authors.FirstOrDefault(c => c.Id == article.authorId);
                         myArticle.Title = article.title;
                         myArticle.Subject = article.subject;
-                        var check = _entities.Authors.FirstOrDefault(c => c.Id == article.authorId);
-                        if (check != null && (article.authorId).GetType() == typeof(int) && (article.authorBirthYear).GetType() == typeof(int) && (article.authorWorkYears).GetType() == typeof(int))
+                        if (author != null)
                         {
                             myArticle.AuthorID = article.authorId;
-                            myArticle.Author.Fname = article.authorFname;
-                            myArticle.Author.Lname = article.authorLname;
-                            myArticle.Author.BirthYear = article.authorBirthYear;
-                            myArticle.Author.WorkYears = article.authorWorkYears;
+                        }
+                        else
+                        {
+                            myArticle.AuthorID = myArticle.AuthorID;
+                        }
+                        if (author != null && (article.authorId).GetType() == typeof(int) && (article.authorBirthYear).GetType() == typeof(int) && (article.authorWorkYears).GetType() == typeof(int) && !string.IsNullOrEmpty(article.authorFname) && !string.IsNullOrEmpty(article.authorLname))
+                        {
+                            author.Id = article.authorId;
+                            author.Fname = article.authorFname;
+                            author.Lname = article.authorLname;
+                            author.BirthYear = article.authorBirthYear;
+                            author.WorkYears = article.authorWorkYears;
+                            myArticle.AuthorID = article.authorId;
+                            _entities.SaveChanges();
                         }
                         else
                         {
@@ -194,14 +204,14 @@ namespace JournalProjectWebApp.Controllers
             }
         }
         //view user profile and can upload image after perform any operation on it 
-        [Route("myProfile/put/{password:alpha}")]
-        public HttpResponseMessage PutBUser(string password, BUser buser)
+        [Route("Profile/put/{username:alpha}/{password}")]
+        public HttpResponseMessage PutBUser(string username,string password, BUser buser)
         {
             using (JournalEntities _entities = new JournalEntities())
             {
                 try
                 {
-                    var myBuser = _entities.BUsers.FirstOrDefault(c => c.Password.Equals(password));
+                    var myBuser = _entities.BUsers.FirstOrDefault(c => c.Username == username && c.Password == password );
                     if (myBuser == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, " no Business User with this Password");
@@ -214,6 +224,7 @@ namespace JournalProjectWebApp.Controllers
                         myBuser.Username = buser.Username;
                         myBuser.Password = buser.Password;
                         myBuser.Email = buser.Email;
+                        myBuser.Image = buser.Image;
                         myBuser.UserType = 2;
                         _entities.SaveChanges();
                         return Request.CreateResponse(HttpStatusCode.OK, " Ur Profile is Updated ");
@@ -225,6 +236,7 @@ namespace JournalProjectWebApp.Controllers
                 }
             }
         }
+        [Route("get")]
         public IEnumerable<BUser> GetBUsers()
         {
             using (JournalEntities _entities = new JournalEntities())
@@ -232,13 +244,13 @@ namespace JournalProjectWebApp.Controllers
                 return _entities.BUsers.ToList();
             }
         }
-        
 
-        public BUser GetBUserById(int id)
+        [Route("Profile/get/{username:alpha}/{password}")]
+        public BUser GetBUserById(string username, string password)
         {
             using (JournalEntities _entities = new JournalEntities())
             {
-                var busers = _entities.BUsers.FirstOrDefault(c => c.Id == id);
+                var busers = _entities.BUsers.FirstOrDefault(c => c.Username == username && c.Password == password);
                 return busers;
             }
         }
@@ -280,6 +292,54 @@ namespace JournalProjectWebApp.Controllers
                 }
             }
         }
+        [Route("GetAuthors")]
+        public HttpResponseMessage GetAllAuthors()
+        {
+            HttpResponseMessage msg;
+            using (JournalEntities _entities = new JournalEntities())
+            {
+                try
+                {
+                    var authors = _entities.Authors.Select(c => new PocoArticles
+                    {
+                        authorId = c.Id,
+                        authorFname = c.Fname,
+                        authorLname = c.Lname,
+                        authorBirthYear = c.BirthYear,
+                        authorWorkYears = c.WorkYears
+                    }).ToList();
+                    if (authors != null)
+                    {
+                        msg = Request.CreateResponse(HttpStatusCode.Accepted, authors);
+                        return msg;
+                    }
+                    else
+                    {
+                        msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not Found");
+                        return msg;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                    return msg;
+                }
+            }
+        }
+        /*public IEnumerable<Author> GetAllAuthors()
+        {
+            try
+            {
+                using (JournalEntities _entities = new JournalEntities())
+                {
+                    return _entities.Authors.ToList();
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }*/
         /*public HttpResponseMessage PutBUser(int id, BUser buser)
         {
             using (JournalEntities _entities = new JournalEntities())

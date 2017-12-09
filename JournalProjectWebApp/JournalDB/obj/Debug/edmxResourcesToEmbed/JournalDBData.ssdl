@@ -43,6 +43,7 @@
     <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="VUsers">
     <Key>
