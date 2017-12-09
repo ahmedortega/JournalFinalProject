@@ -11,9 +11,6 @@ namespace JournalDB
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
-    using System.Web;
     
     public partial class Article
     {

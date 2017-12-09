@@ -10,7 +10,7 @@
     <Property Name="Phone" Type="varchar" MaxLength="11" />
     <Property Name="UserType" Type="int" Nullable="false" />
     <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Articles">
     <Key>
@@ -41,7 +41,7 @@
     <Property Name="Email" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="varchar" MaxLength="11" />
     <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="UserType" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="VUsers">
@@ -52,31 +52,15 @@
     <Property Name="Fname" Type="varchar" MaxLength="50" />
     <Property Name="Lname" Type="varchar" MaxLength="50" />
     <Property Name="Email" Type="varchar" MaxLength="50" />
-    <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="UserType" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="FK_Articles_Authors">
-    <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
-    <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Authors">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Articles">
-        <PropertyRef Name="AuthorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="JournalModelStoreContainer">
     <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BUsers" EntityType="Self.BUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VUsers" EntityType="Self.VUsers" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_Articles_Authors" Association="Self.FK_Articles_Authors">
-      <End Role="Authors" EntitySet="Authors" />
-      <End Role="Articles" EntitySet="Articles" />
-    </AssociationSet>
   </EntityContainer>
 </Schema>

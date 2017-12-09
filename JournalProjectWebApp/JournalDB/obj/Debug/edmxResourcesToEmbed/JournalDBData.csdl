@@ -10,7 +10,7 @@
     <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
     <Property Name="UserType" Type="Int32" Nullable="false" />
     <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
   </EntityType>
   <EntityType Name="Article">
     <Key>
@@ -43,7 +43,7 @@
     <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
     <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="UserType" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="VUser">
@@ -54,8 +54,8 @@
     <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="UserType" Type="Int32" Nullable="false" />
   </EntityType>
   <Association Name="FK_Articles_Authors">
