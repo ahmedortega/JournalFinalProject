@@ -1,6 +1,9 @@
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalProjectWebApp.dll.config
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalProjectWebApp.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalProjectWebApp.pdb
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.dll
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.SqlServer.dll
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\Newtonsoft.Json.dll
@@ -13,6 +16,10 @@ C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\System.Web.Webpages.Deployment.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\System.Web.Webpages.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\System.Web.Webpages.Razor.dll
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.pdb
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.dll.config
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.xml
+C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.SqlServer.xml
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\System.Web.Razor.xml
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\System.Web.Webpages.xml
@@ -28,10 +35,3 @@ C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\obj\Debug\JournalProjectWebApp.csproj.CoreCompileInputs.cache
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\obj\Debug\JournalProjectWebApp.dll
 C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\obj\Debug\JournalProjectWebApp.pdb
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.dll
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.SqlServer.dll
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.dll
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.pdb
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\JournalDB.dll.config
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.xml
-C:\Users\Ahmed Ortega\Documents\GitHub\JournalFinalProject\JournalProjectWebApp\JournalProjectWebApp\bin\EntityFramework.SqlServer.xml

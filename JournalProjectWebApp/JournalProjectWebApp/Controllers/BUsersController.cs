@@ -300,6 +300,34 @@ namespace JournalProjectWebApp.Controllers
             {
                 try
                 {
+                    //serialization problem instead of poco class
+                    _entities.Configuration.ProxyCreationEnabled = false;
+                    var authors = _entities.Authors.ToList();
+                    if (authors != null)
+                    {
+                        msg = Request.CreateResponse(HttpStatusCode.Accepted, authors);
+                        return msg;
+                    }
+                    else
+                    {
+                        msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Not Found");
+                        return msg;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    msg = Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+                    return msg;
+                }
+            }
+        }
+        /*public HttpResponseMessage GetAllAuthors()
+        {
+            HttpResponseMessage msg;
+            using (JournalEntities _entities = new JournalEntities())
+            {
+                try
+                {
                     var authors = _entities.Authors.Select(c => new PocoArticles
                     {
                         authorId = c.Id,
@@ -325,7 +353,7 @@ namespace JournalProjectWebApp.Controllers
                     return msg;
                 }
             }
-        }
+        }*/
         /*public IEnumerable<Author> GetAllAuthors()
         {
             try
